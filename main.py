@@ -3,11 +3,11 @@ import argparse
 import sys
 import os
 
-# 将 gui 目录添加到 sys.path，以便内部模块可以相互导入 (例如 account_manager 导入 utils)
+# Thêm thư mục gui vào sys.path, giúp các module nội bộ có thể import lẫn nhau (ví dụ account_manager import utils)
 sys.path.append(os.path.join(os.path.dirname(__file__), "gui"))
 
-# 支持直接运行和作为模块导入
-# 支持直接运行和作为模块导入
+# Hỗ trợ chạy trực tiếp hoặc được import như một module
+# Hỗ trợ chạy trực tiếp hoặc được import như một module
 try:
     from gui.utils import info, error, warning
     from gui.account_manager import (
@@ -22,180 +22,180 @@ except ImportError as e:
     sys.exit(1)
 
 def show_menu():
-    """显示主菜单"""
+    """Hiển thị menu chính"""
     print("\n" + "="*50)
-    print("🚀 Antigravity 账号管理工具")
+    print("🚀 Công cụ quản lý tài khoản Antigravity")
     print("="*50)
-    print("\n请选择操作：")
-    print("  1. 📋 列出所有备份")
-    print("  2. ➕ 添加/更新备份")
-    print("  3. 🔄 切换/恢复备份")
-    print("  4. 🗑️  删除备份")
-    print("  5. ▶️  启动 Antigravity")
-    print("  6. ⏹️  关闭 Antigravity")
-    print("  0. 🚪 退出")
+    print("\nVui lòng chọn thao tác:")
+    print("  1. 📋 Liệt kê tất cả bản sao lưu")
+    print("  2. ➕ Thêm/cập nhật bản sao lưu")
+    print("  3. 🔄 Chuyển/khôi phục bản sao lưu")
+    print("  4. 🗑️  Xóa bản sao lưu")
+    print("  5. ▶️  Khởi động Antigravity")
+    print("  6. ⏹️  Tắt Antigravity")
+    print("  0. 🚪 Thoát")
     print("-"*50)
 
 def list_accounts():
-    """列出所有账号"""
+    """Liệt kê tất cả tài khoản"""
     accounts = list_accounts_data()
     if not accounts:
-        info("暂无存档")
+        info("Chưa có bản lưu nào")
         return []
     else:
         print("\n" + "="*50)
-        info(f"共有 {len(accounts)} 个存档:")
+        info(f"Tổng cộng có {len(accounts)} bản lưu:")
         print("="*50)
         for idx, acc in enumerate(accounts, 1):
             print(f"\n{idx}. {acc['name']}")
-            print(f"   📧 邮箱: {acc['email']}")
+            print(f"   📧 Email: {acc['email']}")
             print(f"   🆔 ID: {acc['id']}")
-            print(f"   ⏰ 最后使用: {acc['last_used']}")
+            print(f"   ⏰ Lần sử dụng cuối: {acc['last_used']}")
             print("-" * 50)
         return accounts
 
 def add_account():
-    """添加账号备份"""
+    """Thêm bản sao lưu tài khoản"""
     print("\n" + "="*50)
-    print("➕ 添加/更新账号备份")
+    print("➕ Thêm/cập nhật bản sao lưu tài khoản")
     print("="*50)
     
-    name = input("\n请输入账号名称（留空自动生成）: ").strip()
-    email = input("请输入邮箱（留空自动识别）: ").strip()
+    name = input("\nNhập tên tài khoản (để trống để tạo tự động): ").strip()
+    email = input("Nhập email (để trống để tự động nhận dạng): ").strip()
     
     name = name if name else None
     email = email if email else None
     
     print()
     if add_account_snapshot(name, email):
-        info("✅ 操作成功！")
+        info("✅ Thao tác thành công!")
     else:
-        error("❌ 操作失败！")
+        error("❌ Thao tác thất bại!")
 
 def switch_account_interactive():
-    """交互式切换账号"""
+    """Chuyển tài khoản ở chế độ tương tác"""
     accounts = list_accounts()
     if not accounts:
         return
     
     print("\n" + "="*50)
-    print("🔄 切换/恢复账号")
+    print("🔄 Chuyển/khôi phục tài khoản")
     print("="*50)
     
-    choice = input("\n请输入要切换的账号序号: ").strip()
+    choice = input("\nNhập số thứ tự tài khoản cần chuyển: ").strip()
     
     if not choice:
-        warning("已取消操作")
+        warning("Đã hủy thao tác")
         return
     
     real_id = resolve_id(choice)
     if not real_id:
-        error(f"❌ 无效的序号: {choice}")
+        error(f"❌ Số thứ tự không hợp lệ: {choice}")
         return
     
     print()
     if switch_account(real_id):
-        info("✅ 切换成功！")
+        info("✅ Chuyển đổi thành công!")
     else:
-        error("❌ 切换失败！")
+        error("❌ Chuyển đổi thất bại!")
 
 def delete_account_interactive():
-    """交互式删除账号"""
+    """Xóa tài khoản ở chế độ tương tác"""
     accounts = list_accounts()
     if not accounts:
         return
     
     print("\n" + "="*50)
-    print("🗑️  删除账号备份")
+    print("🗑️  Xóa bản sao lưu tài khoản")
     print("="*50)
     
-    choice = input("\n请输入要删除的账号序号: ").strip()
+    choice = input("\nNhập số thứ tự tài khoản cần xóa: ").strip()
     
     if not choice:
-        warning("已取消操作")
+        warning("Đã hủy thao tác")
         return
     
     real_id = resolve_id(choice)
     if not real_id:
-        error(f"❌ 无效的序号: {choice}")
+        error(f"❌ Số thứ tự không hợp lệ: {choice}")
         return
     
-    # 确认删除
-    confirm = input(f"\n⚠️  确定要删除该账号吗？(y/N): ").strip().lower()
+    # Xác nhận xóa
+    confirm = input(f"\n⚠️  Bạn có chắc muốn xóa tài khoản này? (y/N): ").strip().lower()
     if confirm != 'y':
-        warning("已取消删除")
+        warning("Đã hủy xóa")
         return
     
     print()
     if delete_account(real_id):
-        info("✅ 删除成功！")
+        info("✅ Xóa thành công!")
     else:
-        error("❌ 删除失败！")
+        error("❌ Xóa thất bại!")
 
 def interactive_mode():
-    """交互式菜单模式"""
+    """Chế độ menu tương tác"""
     while True:
         show_menu()
-        choice = input("请输入选项 (0-6): ").strip()
+        choice = input("Nhập lựa chọn (0-6): ").strip()
         
         if choice == "1":
             list_accounts()
-            input("\n按回车键继续...")
+            input("\nNhấn Enter để tiếp tục...")
             
         elif choice == "2":
             add_account()
-            input("\n按回车键继续...")
+            input("\nNhấn Enter để tiếp tục...")
             
         elif choice == "3":
             switch_account_interactive()
-            input("\n按回车键继续...")
+            input("\nNhấn Enter để tiếp tục...")
             
         elif choice == "4":
             delete_account_interactive()
-            input("\n按回车键继续...")
+            input("\nNhấn Enter để tiếp tục...")
             
         elif choice == "5":
             print()
             start_antigravity()
-            input("\n按回车键继续...")
+            input("\nNhấn Enter để tiếp tục...")
             
         elif choice == "6":
             print()
             close_antigravity()
-            input("\n按回车键继续...")
+            input("\nNhấn Enter để tiếp tục...")
             
         elif choice == "0":
-            print("\n👋 再见！")
+            print("\n👋 Tạm biệt!")
             sys.exit(0)
             
         else:
-            error("❌ 无效的选项，请重新选择")
-            input("\n按回车键继续...")
+            error("❌ Lựa chọn không hợp lệ, vui lòng chọn lại")
+            input("\nNhấn Enter để tiếp tục...")
 
 def cli_mode():
-    """命令行模式"""
-    parser = argparse.ArgumentParser(description="Antigravity 账号管理工具 (纯 Python 版)")
-    subparsers = parser.add_subparsers(dest="command", help="可用命令")
+    """Chế độ dòng lệnh"""
+    parser = argparse.ArgumentParser(description="Công cụ quản lý tài khoản Antigravity (phiên bản thuần Python)")
+    subparsers = parser.add_subparsers(dest="command", help="Các lệnh khả dụng")
 
     # List
-    subparsers.add_parser("list", help="列出所有存档")
+    subparsers.add_parser("list", help="Liệt kê tất cả bản lưu")
 
     # Add
-    add_parser = subparsers.add_parser("add", help="将当前状态保存为新存档")
-    add_parser.add_argument("--name", "-n", help="存档名称 (可选，默认自动生成)")
-    add_parser.add_argument("--email", "-e", help="关联邮箱 (可选，默认从数据库读取)")
+    add_parser = subparsers.add_parser("add", help="Lưu trạng thái hiện tại thành bản lưu mới")
+    add_parser.add_argument("--name", "-n", help="Tên bản lưu (tùy chọn, mặc định tạo tự động)")
+    add_parser.add_argument("--email", "-e", help="Email liên kết (tùy chọn, mặc định lấy từ cơ sở dữ liệu)")
 
     # Switch
-    switch_parser = subparsers.add_parser("switch", help="切换到指定存档")
-    switch_parser.add_argument("--id", "-i", required=True, help="存档 ID")
+    switch_parser = subparsers.add_parser("switch", help="Chuyển sang bản lưu được chỉ định")
+    switch_parser.add_argument("--id", "-i", required=True, help="ID bản lưu")
 
     # Delete
-    del_parser = subparsers.add_parser("delete", help="删除存档")
-    del_parser.add_argument("--id", "-i", required=True, help="存档 ID")
+    del_parser = subparsers.add_parser("delete", help="Xóa bản lưu")
+    del_parser.add_argument("--id", "-i", required=True, help="ID bản lưu")
     
     # Process Control
-    subparsers.add_parser("start", help="启动 Antigravity")
-    subparsers.add_parser("stop", help="关闭 Antigravity")
+    subparsers.add_parser("start", help="Khởi động Antigravity")
+    subparsers.add_parser("stop", help="Tắt Antigravity")
 
     args = parser.parse_args()
 
@@ -204,29 +204,29 @@ def cli_mode():
 
     elif args.command == "add":
         if add_account_snapshot(args.name, args.email):
-            info("存档添加成功")
+            info("Đã thêm bản lưu thành công")
         else:
             sys.exit(1)
 
     elif args.command == "switch":
         real_id = resolve_id(args.id)
         if not real_id:
-            error(f"无效的 ID 或序号: {args.id}")
+            error(f"ID hoặc số thứ tự không hợp lệ: {args.id}")
             sys.exit(1)
             
         if switch_account(real_id):
-            info("切换成功")
+            info("Chuyển đổi thành công")
         else:
             sys.exit(1)
 
     elif args.command == "delete":
         real_id = resolve_id(args.id)
         if not real_id:
-            error(f"无效的 ID 或序号: {args.id}")
+            error(f"ID hoặc số thứ tự không hợp lệ: {args.id}")
             sys.exit(1)
 
         if delete_account(real_id):
-            info("删除成功")
+            info("Xóa thành công")
         else:
             sys.exit(1)
             
@@ -237,28 +237,28 @@ def cli_mode():
         close_antigravity()
 
     else:
-        # 没有参数时，进入交互式模式
+        # Nếu không có tham số, vào chế độ tương tác
         interactive_mode()
 
 def main():
-    """主入口"""
-    # 如果没有命令行参数，进入交互式模式
+    """Điểm vào chính"""
+    # Nếu không có tham số dòng lệnh, vào chế độ tương tác
     if len(sys.argv) == 1:
         interactive_mode()
     else:
         cli_mode()
 
 def resolve_id(input_id):
-    """解析 ID，支持 UUID 或 序号"""
+    """Phân tích ID, hỗ trợ UUID hoặc số thứ tự"""
     accounts = list_accounts_data()
     
-    # 1. 尝试作为序号处理
+    # 1. Thử xử lý như số thứ tự
     if input_id.isdigit():
         idx = int(input_id)
         if 1 <= idx <= len(accounts):
             return accounts[idx-1]['id']
             
-    # 2. 尝试作为 UUID 匹配
+    # 2. Thử khớp như UUID
     for acc in accounts:
         if acc['id'] == input_id:
             return input_id

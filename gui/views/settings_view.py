@@ -49,7 +49,7 @@ class SettingsView(ft.Container):
     def build_ui(self):
         self.content = ft.Column(
             [
-                ft.Text("设置", size=28, weight=ft.FontWeight.BOLD, color=self.palette.text_main),
+                ft.Text("Cài đặt", size=28, weight=ft.FontWeight.BOLD, color=self.palette.text_main),
                 ft.Container(height=20),
                 
                 # Top Row: Data Management + About (side by side)
@@ -59,7 +59,7 @@ class SettingsView(ft.Container):
                         ft.Container(
                             content=ft.Column(
                                 [
-                                    ft.Text("数据管理", size=13, weight=ft.FontWeight.BOLD, color=self.palette.text_grey),
+                                    ft.Text("Quản lý dữ liệu", size=13, weight=ft.FontWeight.BOLD, color=self.palette.text_grey),
                                     ft.Container(height=10),
                                     ft.Container(
                                         content=ft.Column(
@@ -74,8 +74,8 @@ class SettingsView(ft.Container):
                                                         ),
                                                         ft.Column(
                                                             [
-                                                                ft.Text("本地数据目录", size=15, weight=ft.FontWeight.W_600, color=self.palette.text_main),
-                                                                ft.Text("查看备份文件和数据库", size=12, color=self.palette.text_grey),
+                                                                ft.Text("Thư mục dữ liệu cục bộ", size=15, weight=ft.FontWeight.W_600, color=self.palette.text_main),
+                                                                ft.Text("Xem tệp sao lưu và cơ sở dữ liệu", size=12, color=self.palette.text_grey),
                                                             ],
                                                             spacing=2,
                                                             alignment=ft.MainAxisAlignment.CENTER
@@ -85,7 +85,7 @@ class SettingsView(ft.Container):
                                                 ),
                                                 ft.Container(height=20),
                                                 ft.Container(
-                                                    content=ft.Text("打开文件夹", size=13, color=self.palette.primary, weight=ft.FontWeight.BOLD),
+                                                    content=ft.Text("Mở thư mục", size=13, color=self.palette.primary, weight=ft.FontWeight.BOLD),
                                                     padding=ft.padding.symmetric(horizontal=20, vertical=10),
                                                     border_radius=8,
                                                     bgcolor=self.palette.bg_light_blue,
@@ -117,7 +117,7 @@ class SettingsView(ft.Container):
                         ft.Container(
                             content=ft.Column(
                                 [
-                                    ft.Text("关于", size=13, weight=ft.FontWeight.BOLD, color=self.palette.text_grey),
+                                    ft.Text("Giới thiệu", size=13, weight=ft.FontWeight.BOLD, color=self.palette.text_grey),
                                     ft.Container(height=10),
                                     ft.Container(
                                         content=ft.Column(
@@ -125,14 +125,14 @@ class SettingsView(ft.Container):
                                                 ft.Row(
                                                     [
                                                         ft.Icon(ft.Icons.INFO_OUTLINE, size=20, color=self.palette.primary),
-                                                        ft.Text("Antigravity Manager", size=15, weight=ft.FontWeight.BOLD, color=self.palette.text_main),
+                                                        ft.Text("Trình quản lý Antigravity", size=15, weight=ft.FontWeight.BOLD, color=self.palette.text_main),
                                                     ],
                                                     spacing=10
                                                 ),
                                                 ft.Container(height=15),
                                                 ft.Row(
                                                     [
-                                                        ft.Text("作者：", size=13, color=self.palette.text_grey, weight=ft.FontWeight.W_500),
+                                                        ft.Text("Tác giả:", size=13, color=self.palette.text_grey, weight=ft.FontWeight.W_500),
                                                         ft.Text("Ctrler", size=13, color=self.palette.text_main),
                                                     ],
                                                     spacing=5
@@ -140,7 +140,7 @@ class SettingsView(ft.Container):
                                                 ft.Container(height=8),
                                                 ft.Row(
                                                     [
-                                                        ft.Text("公众号：", size=13, color=self.palette.text_grey, weight=ft.FontWeight.W_500),
+                                                        ft.Text("WeChat:", size=13, color=self.palette.text_grey, weight=ft.FontWeight.W_500),
                                                         ft.Text("Ctrler", size=13, color=self.palette.text_main),
                                                     ],
                                                     spacing=5
@@ -172,7 +172,7 @@ class SettingsView(ft.Container):
                 ft.Container(height=20),
                 
                 # Logs Section (takes up remaining space)
-                ft.Text("系统日志", size=13, weight=ft.FontWeight.BOLD, color=self.palette.text_grey),
+                ft.Text("Nhật ký hệ thống", size=13, weight=ft.FontWeight.BOLD, color=self.palette.text_grey),
                 ft.Container(height=10),
                 ft.Container(
                     content=self.log_view,
@@ -204,7 +204,7 @@ class SettingsView(ft.Container):
             try:
                 os.startfile(path_to_open)
             except Exception as e:
-                print(f"Failed to open folder: {e}")
+                print(f"Mở thư mục thất bại: {e}")
         else:
             os.system(f"xdg-open '{path_to_open}'")
 

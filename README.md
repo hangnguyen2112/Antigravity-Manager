@@ -1,53 +1,53 @@
-# 🚀 Antigravity Manager (反重力账号管理器)
+# 🚀 Trình quản lý Antigravity
 
-> **专为 macOS & Windows 设计的现代化 Antigravity 多账号管理工具**
+> **Công cụ đa tài khoản Antigravity hiện đại dành cho macOS & Windows**
 
-Antigravity Manager 是一个功能强大的辅助工具，旨在解决 Antigravity 客户端无法原生支持多账号切换的痛点。通过接管应用的配置状态，它允许用户在无限个账号之间一键无缝切换，同时提供了自动备份、进程守护和可视化的管理界面。
-
----
-
-## ✨ 核心特性
-
-### 🛡️ 账号安全与管理
-*   **无限账号快照**：创建任意数量的账号备份，完整保存登录凭证、用户配置和本地状态。
-*   **智能识别**：自动从数据库中读取当前登录账号的邮箱和 ID，无需手动输入。
-*   **自动备份机制**：
-    *   **启动备份**：每次启动管理器时自动备份当前状态，防止意外覆盖。
-    *   **切换备份**：在切换账号前自动保存当前账号的最新状态。
-*   **详细元数据**：记录每个存档的创建时间、最后使用时间、邮箱和唯一 ID。
-
-### ⚡️ 无缝体验
-*   **一键切换**：只需点击一次，即可完成“关闭应用 -> 替换数据 -> 重启应用”的全流程。
-*   **进程守护**：
-    *   **优雅退出**：优先使用 AppleScript (macOS) 或 taskkill (Windows) 通知应用正常退出，保护数据完整性。
-    *   **强制兜底**：如果应用卡死，会自动升级为强制终止策略，确保切换成功。
-*   **跨平台支持**：完美适配 macOS (Intel/Apple Silicon) 和 Windows 10/11。
-
-### 🎨 现代化界面
-*   **Flet 驱动**：基于 Flutter 的高性能 GUI，响应迅速。
-*   **原生融合**：自动适配系统的深色/浅色模式，提供原生的窗口体验。
-*   **交互友好**：清晰的列表视图、直观的操作按钮和友好的确认弹窗。
+Antigravity Manager là một công cụ hỗ trợ mạnh mẽ, được thiết kế để giải quyết hạn chế Antigravity không hỗ trợ chuyển đổi nhiều tài khoản một cách nguyên bản. Bằng cách quản lý trạng thái cấu hình của ứng dụng, nó cho phép bạn chuyển đổi tức thời giữa số lượng tài khoản gần như không giới hạn, đồng thời cung cấp cơ chế sao lưu tự động, quản lý tiến trình và giao diện quản lý trực quan.
 
 ---
 
-## 🛠️ 快速开始
+## ✨ Tính năng chính
 
-### 环境要求
-*   **操作系统**: macOS 10.15+ 或 Windows 10+
-*   **Python**: 3.10 或更高版本
-*   **Antigravity**: 必须已安装并运行过至少一次
+### 🛡️ An toàn và quản lý tài khoản
+*   **Ảnh chụp tài khoản không giới hạn**: Tạo số lượng bản sao lưu tài khoản tùy ý, lưu toàn bộ thông tin đăng nhập, cấu hình người dùng và trạng thái cục bộ.
+*   **Nhận diện thông minh**: Tự động đọc email và ID tài khoản hiện đang đăng nhập từ cơ sở dữ liệu, không cần nhập tay.
+*   **Cơ chế sao lưu tự động**:
+    *   **Sao lưu khi khởi động**: Mỗi lần chạy trình quản lý sẽ tự động sao lưu trạng thái hiện tại, tránh bị ghi đè ngoài ý muốn.
+    *   **Sao lưu khi chuyển đổi**: Trước khi chuyển tài khoản sẽ tự động lưu lại trạng thái mới nhất của tài khoản hiện tại.
+*   **Siêu dữ liệu chi tiết**: Ghi lại thời điểm tạo, thời điểm sử dụng gần nhất, email và ID duy nhất cho từng bản lưu.
 
-### 1. 安装依赖
-在项目根目录下运行以下命令安装所需库：
+### ⚡️ Trải nghiệm liền mạch
+*   **Chuyển đổi một cú click**: Chỉ cần một lần nhấn để hoàn thành toàn bộ quy trình “tắt ứng dụng -> thay dữ liệu -> khởi động lại”.
+*   **Bảo vệ tiến trình**:
+    *   **Thoát thân thiện**: Ưu tiên dùng AppleScript (macOS) hoặc `taskkill` (Windows) để yêu cầu ứng dụng thoát bình thường, bảo vệ tính toàn vẹn dữ liệu.
+    *   **Buộc dừng dự phòng**: Nếu ứng dụng treo, hệ thống tự động nâng cấp thành chiến lược buộc dừng để đảm bảo chuyển đổi thành công.
+*   **Hỗ trợ đa nền tảng**: Tương thích tốt với macOS (Intel / Apple Silicon) và Windows 10/11.
+
+### 🎨 Giao diện hiện đại
+*   **Dựa trên Flet**: GUI hiệu năng cao dựa trên Flutter, phản hồi nhanh.
+*   **Hòa nhập với hệ thống**: Tự động thích ứng với chế độ sáng/tối của hệ điều hành, mang lại trải nghiệm cửa sổ tự nhiên.
+*   **Tối ưu tương tác**: Danh sách rõ ràng, nút thao tác trực quan và hộp thoại xác nhận thân thiện.
+
+---
+
+## 🛠️ Bắt đầu nhanh
+
+### Yêu cầu môi trường
+*   **Hệ điều hành**: macOS 10.15+ hoặc Windows 10+
+*   **Python**: 3.10 hoặc mới hơn
+*   **Antigravity**: Đã cài đặt và chạy ít nhất một lần
+
+### 1. Cài đặt phụ thuộc
+Tại thư mục gốc của dự án, cài đặt các gói cần thiết:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. 运行应用
+### 2. Chạy ứng dụng
 
-#### 🖥️ 图形界面模式 (GUI) - 推荐
-启动图形界面，体验完整的交互功能：
+#### 🖥️ Chế độ giao diện đồ họa (GUI) – khuyến nghị
+Khởi động giao diện đồ họa để sử dụng đầy đủ tính năng:
 
 ```bash
 # macOS / Linux
@@ -57,106 +57,106 @@ python gui/main.py
 python gui\main.py
 ```
 
-#### ⌨️ 命令行模式 (CLI)
-适合脚本集成或极客用户。
+#### ⌨️ Chế độ dòng lệnh (CLI)
+Phù hợp để tích hợp vào script hoặc cho người dùng thích dòng lệnh.
 
-**交互式菜单**:
+**Menu tương tác**:
 ```bash
 python main.py
 ```
 
-**常用命令**:
+**Một số lệnh thường dùng**:
 ```bash
-# 列出所有存档
+# Liệt kê tất cả bản lưu
 python main.py list
 
-# 备份当前账号 (自动获取名称)
+# Sao lưu tài khoản hiện tại (tự động lấy tên)
 python main.py add
 
-# 指定名称备份
-python main.py add -n "工作账号"
+# Sao lưu với tên chỉ định
+python main.py add -n "tai_khoan_cong_viec"
 
-# 切换账号 (使用 ID 或 列表序号)
+# Chuyển tài khoản (dùng ID hoặc số thứ tự trong danh sách)
 python main.py switch -i 1
 
-# 删除备份
+# Xóa bản lưu
 python main.py delete -i 1
 ```
 
 ---
 
-## 📦 打包与部署
+## 📦 Đóng gói và triển khai
 
-本项目内置了自动化构建脚本，可生成无需 Python 环境的独立可执行文件。
+Dự án đã tích hợp sẵn script build tự động, có thể tạo ra các file thực thi độc lập không cần môi trường Python.
 
-### 🍎 macOS 打包
-构建 `.app` 应用和 `.dmg` 安装包。
+### 🍎 Đóng gói trên macOS
+Build ứng dụng `.app` và gói cài đặt `.dmg`:
 
 ```bash
-# 1. 赋予脚本执行权限
+# 1. Cấp quyền thực thi cho script
 chmod +x build_macos.sh
 
-# 2. 运行构建
+# 2. Chạy script build
 ./build_macos.sh
 ```
-*   **产物路径**: `gui/build/macos/`
-*   **包含**: `Antigravity Manager.app`, `Antigravity Manager.dmg`
-*   **架构**: Universal Binary (支持 Intel & M1/M2/M3)
+*   **Đường dẫn sản phẩm**: `gui/build/macos/`
+*   **Bao gồm**: `Antigravity Manager.app`, `Antigravity Manager.dmg`
+*   **Kiến trúc**: Universal Binary (hỗ trợ Intel & M1/M2/M3)
 
-### 🪟 Windows 打包
-构建单文件 `.exe` 可执行程序。
+### 🪟 Đóng gói trên Windows
+Build chương trình thực thi `.exe` một file:
 
 ```powershell
-# 在 PowerShell 中运行
+# Chạy trong PowerShell
 ./build_windows.ps1
 ```
-*   **产物路径**: `dist/`
-*   **包含**: `Antigravity Manager.exe`
-*   **特点**: 无控制台黑窗口，单文件便携运行。
+*   **Đường dẫn sản phẩm**: `dist/`
+*   **Bao gồm**: `Antigravity Manager.exe`
+*   **Đặc điểm**: Không có cửa sổ console đen, một file duy nhất, dễ mang theo.
 
 ---
 
-## 🧩 技术架构
+## 🧩 Kiến trúc kỹ thuật
 
-### 目录结构
+### Cấu trúc thư mục
 ```
 antigravity_manager/
-├── assets/                 # 静态资源 (图标等)
-├── gui/                    # 核心代码库
-│   ├── main.py             # GUI 入口点
-│   ├── account_manager.py  # 账号逻辑 (增删改查)
-│   ├── process_manager.py  # 进程控制 (跨平台进程管理)
-│   ├── db_manager.py       # 数据持久化 (文件操作)
-│   ├── views/              # UI 视图组件
-│   └── utils.py            # 通用工具类
-├── main.py                 # CLI 入口点
-├── build_macos.sh          # macOS 构建脚本
-├── build_windows.ps1       # Windows 构建脚本
-└── requirements.txt        # Python 依赖
+├── assets/                 # Tài nguyên tĩnh (icon, v.v.)
+├── gui/                    # Mã nguồn chính của GUI
+│   ├── main.py             # Điểm vào GUI
+│   ├── account_manager.py  # Logic tài khoản (thêm/xóa/sửa/đọc)
+│   ├── process_manager.py  # Quản lý tiến trình (đa nền tảng)
+│   ├── db_manager.py       # Truy cập dữ liệu (cơ sở dữ liệu/tệp)
+│   ├── views/              # Các thành phần giao diện
+│   └── utils.py            # Tiện ích dùng chung
+├── main.py                 # Điểm vào CLI
+├── build_macos.sh          # Script build cho macOS
+├── build_windows.ps1       # Script build cho Windows
+└── requirements.txt        # Các phụ thuộc Python
 ```
 
-### 数据存储
-*   **配置文件**: `~/.antigravity-agent/accounts.json` (存储账号列表索引)
-*   **备份数据**: `~/.antigravity-agent/backups/*.json` (实际的账号数据快照)
-*   **日志文件**: `~/.antigravity-agent/app.log`
+### Lưu trữ dữ liệu
+*   **Tệp cấu hình**: `~/.antigravity-agent/accounts.json` (lưu chỉ mục danh sách tài khoản)
+*   **Dữ liệu sao lưu**: `~/.antigravity-agent/backups/*.json` (các snapshot dữ liệu tài khoản)
+*   **Tệp nhật ký**: `~/.antigravity-agent/app.log`
 
 ---
 
-## ❓ 常见问题 (FAQ)
+## ❓ Câu hỏi thường gặp (FAQ)
 
-**Q: 切换账号后，Antigravity 没有自动启动？**
-A: 请确保 Antigravity 安装在标准路径（macOS 为 `/Applications`，Windows 为默认安装目录）。如果使用了自定义路径，程序会尝试通过 URI 协议 (`antigravity://`) 启动。
+**Hỏi: Sau khi chuyển tài khoản, Antigravity không tự khởi động?**  
+Đáp: Hãy đảm bảo Antigravity được cài ở đường dẫn tiêu chuẩn (trên macOS là `/Applications`, trên Windows là thư mục cài đặt mặc định). Nếu bạn dùng đường dẫn tùy chỉnh, chương trình sẽ cố gắng khởi động thông qua giao thức URI (`antigravity://`).
 
-**Q: 备份文件存在哪里？**
-A: 所有数据都存储在用户主目录下的 `.antigravity-agent` 文件夹中。您可以随时手动备份此文件夹。
+**Hỏi: Tệp sao lưu được lưu ở đâu?**  
+Đáp: Tất cả dữ liệu được lưu trong thư mục `.antigravity-agent` trong thư mục home của người dùng. Bạn có thể sao lưu thủ công cả thư mục này bất cứ lúc nào.
 
-**Q: 为什么 Windows 上杀毒软件会报毒？**
-A: 使用 PyInstaller 打包的单文件 exe 偶尔会被误报。这是 PyInstaller 的已知问题。请将应用加入白名单，或直接使用 Python 源码运行。
+**Hỏi: Tại sao trên Windows phần mềm diệt virus lại báo độc?**  
+Đáp: Các file `.exe` một tệp được đóng gói bằng PyInstaller đôi khi bị nhận nhầm là mã độc – đây là vấn đề đã biết của PyInstaller. Bạn có thể cho ứng dụng vào danh sách tin cậy hoặc chạy trực tiếp từ mã nguồn Python.
 
 ---
 
-## 📄 许可证
+## 📄 Giấy phép
 
-本项目采用 MIT 许可证。欢迎提交 Issue 和 Pull Request。
+Dự án sử dụng giấy phép MIT. Rất hoan nghênh mọi Issue và Pull Request.
 
-Copyright (c) 2025 Ctrler. All rights reserved.
+Copyright (c) 2025 Ctrler.

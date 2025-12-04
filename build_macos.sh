@@ -1,90 +1,90 @@
 #!/bin/bash
 
-# 设置错误时退出
+# Thoát ngay khi có lỗi
 set -e
 
-echo "🚀 开始构建 Antigravity Manager (macOS)..."
+echo "🚀 Bắt đầu build Trình quản lý Antigravity (macOS)..."
 
-# 1. 同步资源文件
-echo "📦 同步资源文件..."
-# 确保 gui/assets 目录存在
+# 1. Đồng bộ tệp tài nguyên
+echo "📦 Đồng bộ tệp tài nguyên..."
+# Đảm bảo thư mục gui/assets tồn tại
 mkdir -p gui/assets
-# 同步 assets 目录内容到 gui/assets
+# Đồng bộ nội dung thư mục assets vào gui/assets
 cp -R assets/* gui/assets/
-# 同步 requirements.txt
+# Đồng bộ requirements.txt
 cp requirements.txt gui/requirements.txt
 
-# 2. 清理旧构建
-echo "🧹 清理旧构建文件..."
+# 2. Dọn dẹp kết quả build cũ
+echo "🧹 Đang dọn dẹp các tệp build cũ..."
 rm -rf gui/build/macos
 
-# 3. 执行构建
-echo "🔨 开始编译..."
+# 3. Thực hiện build
+echo "🔨 Bắt đầu biên dịch..."
 source .venv/bin/activate
 cd gui
 
-# 临时关闭 set -e，因为 flet build 可能会抛出 SystemExit: 0 的 traceback 但实际构建成功
+# Tạm thời tắt set -e vì flet build có thể ném traceback SystemExit: 0 nhưng thực tế build vẫn thành công
 set +e
 
-# 确保不进入交互模式
+# Đảm bảo không vào chế độ tương tác
 unset PYTHONINSPECT
 
-# 使用 python -c 直接调用 flet_cli，绕过可能的入口点问题，并重定向输入
+# Sử dụng python -c để gọi trực tiếp flet_cli, tránh các vấn đề về entrypoint và chuyển hướng input
 python -c "import sys; from flet.cli import main; main()" build macos \
     --product "Antigravity Manager" \
     --org "com.ctrler.antigravity" \
     --copyright "Copyright (c) 2025 Ctrler" \
     --build-version "1.0.0" \
-    --desc "Antigravity 账号管理工具" < /dev/null
+    --desc "Công cụ quản lý tài khoản Antigravity" < /dev/null
 EXIT_CODE=$?
 set -e
 
-# 返回根目录
+# Quay lại thư mục gốc
 cd ..
 
-# 4. 检查构建产物并打包 DMG
+# 4. Kiểm tra kết quả build và đóng gói DMG
 APP_NAME="Antigravity Manager"
 APP_PATH="gui/build/macos/$APP_NAME.app"
 DMG_NAME="$APP_NAME.dmg"
 OUTPUT_DMG="gui/build/macos/$DMG_NAME"
 
 if [ -d "$APP_PATH" ]; then
-    echo "✅ 检测到应用包，构建成功 (忽略 Flet CLI 的退出状态)"
+    echo "✅ Đã phát hiện gói ứng dụng, build thành công (bỏ qua mã thoát của Flet CLI)"
 else
-    echo "❌ 构建失败，未找到应用包"
+    echo "❌ Build thất bại, không tìm thấy gói ứng dụng"
     exit $EXIT_CODE
 fi
 
-echo "📦 正在创建 DMG 安装包..."
+echo "📦 Đang tạo gói cài đặt DMG..."
 
-# 创建临时目录用于制作 DMG
+# Tạo thư mục tạm để tạo DMG
 DMG_SOURCE="gui/build/macos/dmg_source"
 rm -rf "$DMG_SOURCE"
 mkdir -p "$DMG_SOURCE"
 
-# 复制应用到临时目录
-echo "📋 复制应用到临时目录..."
+# Sao chép ứng dụng vào thư mục tạm
+echo "📋 Đang sao chép ứng dụng vào thư mục tạm..."
 cp -R "$APP_PATH" "$DMG_SOURCE/"
 
-# 创建 Applications 软链接
+# Tạo liên kết mềm tới Applications
 ln -s /Applications "$DMG_SOURCE/Applications"
 
-# 使用 hdiutil 创建 DMG
-echo "💿 创建 DMG 文件..."
+# Tạo DMG bằng hdiutil
+echo "💿 Đang tạo tệp DMG..."
 rm -f "$OUTPUT_DMG"
 TEMP_DMG="gui/build/macos/temp.dmg"
 rm -f "$TEMP_DMG"
 
-# 第一步：创建可读写的 DMG
+# Bước 1: Tạo DMG có thể đọc/ghi
 hdiutil create -volname "$APP_NAME" -srcfolder "$DMG_SOURCE" -ov -format UDRW "$TEMP_DMG"
 
-# 第二步：转换为压缩的只读 DMG
+# Bước 2: Chuyển sang DMG nén chỉ đọc
 hdiutil convert "$TEMP_DMG" -format UDZO -o "$OUTPUT_DMG"
 
-# 清理
+# Dọn dẹp
 rm -f "$TEMP_DMG"
 rm -rf "$DMG_SOURCE"
 
-echo "🎉 打包完成！"
-echo "📂 应用位置: $APP_PATH"
-echo "💿 DMG 文件: $OUTPUT_DMG"
+echo "🎉 Đóng gói hoàn tất!"
+echo "📂 Vị trí ứng dụng: $APP_PATH"
+echo "💿 Tệp DMG: $OUTPUT_DMG"

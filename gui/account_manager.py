@@ -12,7 +12,7 @@ from db_manager import backup_account, restore_account, get_current_account_info
 from process_manager import close_antigravity, start_antigravity
 
 def load_accounts():
-    """加载账号列表"""
+    """Tải danh sách tài khoản"""
     file_path = get_accounts_file_path()
     if not file_path.exists():
         return {}
@@ -21,42 +21,42 @@ def load_accounts():
         with open(file_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
-        error(f"加载账号列表失败: {e}")
+        error(f"Tải danh sách tài khoản thất bại: {e}")
         return {}
 
 def save_accounts(accounts):
-    """保存账号列表"""
+    """Lưu danh sách tài khoản"""
     file_path = get_accounts_file_path()
     try:
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(accounts, f, ensure_ascii=False, indent=2)
         return True
     except Exception as e:
-        error(f"保存账号列表失败: {e}")
+        error(f"Lưu danh sách tài khoản thất bại: {e}")
         return False
 
 def add_account_snapshot(name=None, email=None):
-    """添加当前状态为新账号，如果邮箱已存在则覆盖"""
-    # 0. 自动获取信息
+    """Thêm tài khoản mới từ trạng thái hiện tại, nếu email đã tồn tại thì sẽ ghi đè"""
+    # 0. Tự động lấy thông tin
     if not email:
-        info("正在尝试从数据库读取账号信息...")
+        info("Đang cố gắng đọc thông tin tài khoản từ cơ sở dữ liệu...")
         account_info = get_current_account_info()
         if account_info and "email" in account_info:
             email = account_info["email"]
-            info(f"自动获取到邮箱: {email}")
+            info(f"Đã tự động lấy được email: {email}")
         else:
-            warning("无法从数据库自动获取邮箱，将使用 'Unknown'")
+            warning("Không thể tự động lấy email từ cơ sở dữ liệu, sẽ sử dụng 'Unknown'")
             email = "Unknown"
             
     if not name:
-        # 如果没有提供名称，使用邮箱前缀或默认名称
+        # Nếu không cung cấp tên, sử dụng phần trước @ của email hoặc tên mặc định
         if email and email != "Unknown":
             name = email.split("@")[0]
         else:
             name = f"Account_{int(time.time())}"
-        info(f"使用自动生成的名称: {name}")
+        info(f"Sử dụng tên được tạo tự động: {name}")
 
-    # 1. 检查是否已存在相同邮箱的账号
+    # 1. Kiểm tra xem đã tồn tại tài khoản với cùng email hay chưa
     accounts = load_accounts()
     existing_account = None
     existing_id = None
@@ -68,18 +68,18 @@ def add_account_snapshot(name=None, email=None):
             break
     
     if existing_account:
-        info(f"检测到邮箱 {email} 已存在备份，将覆盖旧备份")
-        # 使用已有的 ID 和备份路径
+        info(f"Phát hiện email {email} đã có bản sao lưu, sẽ ghi đè bản cũ")
+        # Sử dụng ID và đường dẫn sao lưu hiện có
         account_id = existing_id
         backup_path = Path(existing_account["backup_file"])
         created_at = existing_account.get("created_at", datetime.now().isoformat())
         
-        # 如果没有提供新名称，保留原名称
+        # Nếu không cung cấp tên mới, giữ lại tên cũ
         if not name or name == email.split("@")[0]:
             name = existing_account.get("name", name)
     else:
-        info(f"创建新账号备份: {email}")
-        # 生成新的 ID 和备份路径
+        info(f"Tạo bản sao lưu tài khoản mới: {email}")
+        # Tạo ID mới và đường dẫn sao lưu
         account_id = str(uuid.uuid4())
         backup_filename = f"{account_id}.json"
         backup_dir = get_app_data_dir() / "backups"
@@ -87,13 +87,13 @@ def add_account_snapshot(name=None, email=None):
         backup_path = backup_dir / backup_filename
         created_at = datetime.now().isoformat()
     
-    # 2. 执行备份
-    info(f"正在备份当前状态为账号: {name}")
+    # 2. Thực hiện sao lưu
+    info(f"Đang sao lưu trạng thái hiện tại cho tài khoản: {name}")
     if not backup_account(email, str(backup_path)):
-        error("备份失败，取消添加账号")
+        error("Sao lưu thất bại, hủy thao tác thêm tài khoản")
         return False
     
-    # 3. 更新账号列表
+    # 3. Cập nhật danh sách tài khoản
     accounts[account_id] = {
         "id": account_id,
         "name": name,
@@ -105,43 +105,43 @@ def add_account_snapshot(name=None, email=None):
     
     if save_accounts(accounts):
         if existing_account:
-            info(f"账号 {name} ({email}) 备份已更新")
+            info(f"Bản sao lưu tài khoản {name} ({email}) đã được cập nhật")
         else:
-            info(f"账号 {name} ({email}) 添加成功")
+            info(f"Tài khoản {name} ({email}) đã được thêm thành công")
         return True
     return False
 
 def delete_account(account_id):
-    """删除账号"""
+    """Xóa tài khoản"""
     accounts = load_accounts()
     if account_id not in accounts:
-        error("账号不存在")
+        error("Tài khoản không tồn tại")
         return False
     
     account = accounts[account_id]
     name = account.get("name", "Unknown")
     backup_file = account.get("backup_file")
     
-    # 删除备份文件
+    # Xóa tệp sao lưu
     if backup_file and os.path.exists(backup_file):
         try:
             os.remove(backup_file)
-            info(f"备份文件已删除: {backup_file}")
+            info(f"Tệp sao lưu đã được xóa: {backup_file}")
         except Exception as e:
-            warning(f"删除备份文件失败: {e}")
+            warning(f"Xóa tệp sao lưu thất bại: {e}")
     
-    # 从列表中移除
+    # Xóa khỏi danh sách
     del accounts[account_id]
     if save_accounts(accounts):
-        info(f"账号 {name} 已删除")
+        info(f"Tài khoản {name} đã được xóa")
         return True
     return False
 
 def switch_account(account_id):
-    """切换到指定账号"""
+    """Chuyển sang tài khoản được chỉ định"""
     accounts = load_accounts()
     if account_id not in accounts:
-        error("账号不存在")
+        error("Tài khoản không tồn tại")
         return False
     
     account = accounts[account_id]
@@ -149,34 +149,34 @@ def switch_account(account_id):
     backup_file = account.get("backup_file")
     
     if not backup_file or not os.path.exists(backup_file):
-        error(f"备份文件丢失: {backup_file}")
+        error(f"Tệp sao lưu bị thiếu: {backup_file}")
         return False
     
-    info(f"准备切换到账号: {name}")
+    info(f"Chuẩn bị chuyển sang tài khoản: {name}")
     
-    # 1. 关闭进程
+    # 1. Đóng tiến trình
     if not close_antigravity():
-        # 尝试继续，但给出警告
-        warning("无法关闭 Antigravity，尝试强制恢复...")
+        # Thử tiếp tục nhưng đưa ra cảnh báo
+        warning("Không thể tắt Antigravity, thử khôi phục cưỡng bức...")
     
-    # 2. 恢复数据
+    # 2. Khôi phục dữ liệu
     if restore_account(backup_file):
-        # 更新最后使用时间
+        # Cập nhật thời gian sử dụng gần nhất
         accounts[account_id]["last_used"] = datetime.now().isoformat()
         save_accounts(accounts)
         
-        # 3. 启动进程
+        # 3. Khởi động tiến trình
         start_antigravity()
-        info(f"切换到账号 {name} 成功")
+        info(f"Chuyển sang tài khoản {name} thành công")
         return True
     else:
-        error("恢复数据失败")
+        error("Khôi phục dữ liệu thất bại")
         return False
 
 def list_accounts_data():
-    """获取账号列表数据 (用于显示)"""
+    """Lấy dữ liệu danh sách tài khoản (dùng để hiển thị)"""
     accounts = load_accounts()
     data = list(accounts.values())
-    # 按最后使用时间倒序排序
+    # Sắp xếp giảm dần theo thời gian sử dụng gần nhất
     data.sort(key=lambda x: x.get("last_used", ""), reverse=True)
     return data

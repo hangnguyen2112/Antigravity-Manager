@@ -1,81 +1,47 @@
 # build_windows.ps1
 
-Write-Host "🚀 开始构建 Antigravity Manager (Windows)..." -ForegroundColor Cyan
+Write-Host "🚀 Bắt đầu build Trình quản lý Antigravity (Windows)..." -ForegroundColor Cyan
 
-# 1. 检查环境
+# 1. Kiểm tra môi trường
 if (-not (Get-Command "flet" -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ 未找到 flet 命令，正在安装..." -ForegroundColor Yellow
+    Write-Host "❌ Không tìm thấy lệnh flet, đang cài đặt..." -ForegroundColor Yellow
     pip install flet
 }
 if (-not (Get-Command "pyinstaller" -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ 未找到 pyinstaller 命令，正在安装..." -ForegroundColor Yellow
+    Write-Host "❌ Không tìm thấy lệnh pyinstaller, đang cài đặt..." -ForegroundColor Yellow
     pip install pyinstaller
 }
 
-# 安装项目依赖
+# Cài đặt phụ thuộc của dự án
 if (Test-Path "requirements.txt") {
-    Write-Host "📦 正在安装/更新项目依赖..." -ForegroundColor Green
+    Write-Host "📦 Đang cài đặt/cập nhật các phụ thuộc của dự án..." -ForegroundColor Green
     pip install -r requirements.txt
 }
 
-# 2. 清理旧构建
-Write-Host "🧹 清理旧构建文件..." -ForegroundColor Green
+# 2. Dọn dẹp kết quả build cũ
+Write-Host "🧹 Đang dọn dẹp các tệp build cũ..." -ForegroundColor Green
 if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force }
 if (Test-Path "build") { Remove-Item "build" -Recurse -Force }
 
-# 3. 准备资源
-# 确保 gui/assets 存在并是最新的
-Write-Host "📦 同步资源文件..." -ForegroundColor Green
+# 3. Chuẩn bị tài nguyên
+# Đảm bảo gui/assets tồn tại và là bản mới nhất
+Write-Host "📦 Đang đồng bộ tệp tài nguyên..." -ForegroundColor Green
 if (-not (Test-Path "gui/assets")) { New-Item -ItemType Directory -Path "gui/assets" | Out-Null }
 Copy-Item "assets/*" "gui/assets/" -Recurse -Force
 
-# 4. 执行构建
-Write-Host "🔨 开始编译..." -ForegroundColor Green
+# 4. Thực hiện build
+Write-Host "🔨 Bắt đầu biên dịch..." -ForegroundColor Green
 
-# 使用 flet pack 打包
-# build_windows.ps1
+# Giai đoạn tiếp theo: đóng gói bằng PyInstaller
 
-Write-Host "🚀 开始构建 Antigravity Manager (Windows)..." -ForegroundColor Cyan
+# 4. Thực hiện đóng gói PyInstaller
+Write-Host "📦 Đang đóng gói..." -ForegroundColor Yellow
 
-# 1. 检查环境
-if (-not (Get-Command "flet" -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ 未找到 flet 命令，正在安装..." -ForegroundColor Yellow
-    pip install flet
-}
-if (-not (Get-Command "pyinstaller" -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ 未找到 pyinstaller 命令，正在安装..." -ForegroundColor Yellow
-    pip install pyinstaller
-}
-
-# 2. 清理旧构建
-Write-Host "🧹 清理旧构建文件..." -ForegroundColor Green
-if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force }
-if (Test-Path "build") { Remove-Item "build" -Recurse -Force }
-
-# 3. 准备资源
-# 确保 gui/assets 存在并是最新的
-Write-Host "📦 同步资源文件..." -ForegroundColor Green
-if (-not (Test-Path "gui/assets")) { New-Item -ItemType Directory -Path "gui/assets" | Out-Null }
-Copy-Item "assets/*" "gui/assets/" -Recurse -Force
-
-# 4. 执行构建
-Write-Host "🔨 开始编译..." -ForegroundColor Green
-
-# 使用 flet pack 打包
-# --icon: 指定图标
-# --add-data: 添加资源文件 (格式: 源路径;目标路径)
-# --name: 指定输出文件名
-# --noconsole: 不显示控制台窗口 (如果需要调试，可以去掉这个参数)
-# gui/main.py: 入口文件
-
-# 4. 执行 PyInstaller 打包
-Write-Host "📦 正在打包..." -ForegroundColor Yellow
-
-# 使用 PyInstaller 直接打包
-# --onefile: 打包成单文件
-# --windowed: 无控制台 (GUI应用)
-# --add-data: 添加资源文件 (格式: 源路径;目标路径)
-# --hidden-import: 强制导入可能被遗漏的模块
+# Sử dụng PyInstaller để đóng gói trực tiếp
+# --onefile: Đóng gói thành một tệp duy nhất
+# --windowed: Không có console (ứng dụng GUI)
+# --add-data: Thêm tệp tài nguyên (định dạng: đường_dẫn_nguồn;đường_dẫn_đích)
+# --hidden-import: Ép buộc import các module có thể bị bỏ sót
 pyinstaller --noconfirm --onefile --windowed --clean `
     --name "Antigravity Manager" `
     --icon "assets/icon.ico" `
@@ -94,17 +60,17 @@ pyinstaller --noconfirm --onefile --windowed --clean `
     --hidden-import "icons" `
     "gui/main.py"
 
-# 检查结果
+# Kiểm tra kết quả
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ 打包失败！" -ForegroundColor Red
+    Write-Host "❌ Đóng gói thất bại!" -ForegroundColor Red
     exit 1
 }
 
-# 5. 检查结果
+# 5. Kiểm tra kết quả
 if (Test-Path "dist/Antigravity Manager.exe") {
-    Write-Host "`n🎉 构建成功！" -ForegroundColor Green
-    Write-Host "文件位置: dist/Antigravity Manager.exe" -ForegroundColor Cyan
+    Write-Host "`n🎉 Build thành công!" -ForegroundColor Green
+    Write-Host "Vị trí tệp: dist/Antigravity Manager.exe" -ForegroundColor Cyan
 } else {
-    Write-Host "❌ 未找到生成的 exe 文件" -ForegroundColor Red
+    Write-Host "❌ Không tìm thấy tệp exe được tạo" -ForegroundColor Red
     exit 1
 }

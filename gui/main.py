@@ -45,8 +45,8 @@ class Sidebar(ft.Container):
         self.padding = ft.padding.only(top=20, left=10, right=10)
         
         self.items = [
-            {"icon": AppIcons.dashboard, "label": "仪表盘"},
-            {"icon": AppIcons.settings, "label": "设置"},
+            {"icon": AppIcons.dashboard, "label": "Bảng điều khiển"},
+            {"icon": AppIcons.settings, "label": "Cài đặt"},
         ]
         
         # Initialize theme without calling update()
@@ -92,17 +92,17 @@ class Sidebar(ft.Container):
         self.on_nav_change(index)
 
 def main(page: ft.Page):
-    # 尝试在启动时写入日志，验证路径和权限
+    # Thử ghi nhật ký ngay khi khởi động, kiểm tra đường dẫn và quyền truy cập
     try:
         from utils import info, get_app_data_dir
         app_dir = get_app_data_dir()
-        info(f"应用启动，数据目录: {app_dir}")
-        info(f"Python 版本: {sys.version}")
-        info(f"运行平台: {sys.platform}")
+        info(f"Ứng dụng khởi động, thư mục dữ liệu: {app_dir}")
+        info(f"Phiên bản Python: {sys.version}")
+        info(f"Nền tảng chạy: {sys.platform}")
     except Exception as e:
-        print(f"启动日志写入失败: {e}")
+        print(f"Ghi nhật ký khởi động thất bại: {e}")
 
-    page.title = "Antigravity Manager"
+    page.title = "Trình quản lý Antigravity"
     page.theme_mode = ft.ThemeMode.SYSTEM
     
     # Window settings optimization
