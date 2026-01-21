@@ -53,6 +53,7 @@ Khởi động giao diện đồ họa để sử dụng đầy đủ tính năn
 # macOS / Linux
 python gui/main.py
 
+conda activate D:\conda\UAV-Image-stitching
 # Windows
 python gui\main.py
 ```
